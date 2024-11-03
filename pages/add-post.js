@@ -1,6 +1,7 @@
 // pages/add-post.js
 
 import { useState, useEffect } from 'react';
+import { TextField, Button, Container, Typography, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
 
 export default function AddPost() {
   const [title, setTitle] = useState('');
@@ -35,38 +36,47 @@ export default function AddPost() {
   };
 
   return (
-    <div>
-      <h1>Add a New Post</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Content</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Add Post</button>
-      </form>
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Add a New Post
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+        <TextField
+          label="Title"
+          variant="outlined"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          fullWidth
+        />
+        <TextField
+          label="Content"
+          variant="outlined"
+          multiline
+          rows={4}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+          fullWidth
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Add Post
+        </Button>
+      </Box>
 
-      <h2>All Posts</h2>
-      <ul>
+      <Typography variant="h5" component="h2" gutterBottom>
+        All Posts
+      </Typography>
+      <List>
         {posts.map((post) => (
-          <li key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-          </li>
+          <div key={post.id}>
+            <ListItem alignItems="flex-start">
+              <ListItemText primary={post.title} secondary={post.content} />
+            </ListItem>
+            <Divider component="li" />
+          </div>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 }
