@@ -38,7 +38,7 @@ export default function AddPost() {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" component="h1" gutterBottom>
-        Add a New Post
+        Create a post
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
         <TextField
@@ -60,12 +60,12 @@ export default function AddPost() {
           fullWidth
         />
         <Button type="submit" variant="contained" color="primary">
-          Add Post
+          Save
         </Button>
       </Box>
 
       <Typography variant="h5" component="h2" gutterBottom>
-        All Posts
+        All notes
       </Typography>
       <List>
         {posts.map((post) => (
