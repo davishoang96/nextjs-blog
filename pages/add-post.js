@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { TextField, Button, Container, Typography, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
 
+import ButtonAppBar from '../components/AppBar';
+
 export default function AddPost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -36,7 +38,10 @@ export default function AddPost() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container>
+
+      <ButtonAppBar/>
+
       <Typography variant="h4" component="h1" gutterBottom>
         Create a post
       </Typography>
@@ -65,7 +70,7 @@ export default function AddPost() {
       </Box>
 
       <Typography variant="h5" component="h2" gutterBottom>
-        All notes
+        All posts
       </Typography>
       <List>
         {posts.map((post) => (

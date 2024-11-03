@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Typography, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
 
+import ButtonAppBar from '../components/AppBar';
+
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
 
@@ -13,10 +15,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" component="h1" gutterBottom>
-        Blog Posts
-      </Typography>
+    <Container>
+    <ButtonAppBar />
       <List>
         {posts.map((post) => (
           <div key={post.id}>
