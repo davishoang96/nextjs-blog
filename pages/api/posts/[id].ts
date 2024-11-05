@@ -1,13 +1,13 @@
 // pages/api/posts/[id].ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient, Post } from '@prisma/client';
-import { getPostById } from '../../../repositories/postRepository';
+import { deletePostById, getPostById } from '../../../repositories/postRepository';
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Post | { error: string }>
+  res: NextApiResponse<Post | { error: string } | { id: Number }>
 ) {
   const { id } = req.query;
 
@@ -21,6 +21,14 @@ export default async function handler(
       }
 
       res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({ error: 'Error retrieving post' });
+    }
+  } else if (req.method === 'DELETE') {
+    try {
+      const postId = parseInt(id as string, 10);
+      await deletePostById(postId);
+      res.status(200).json({id: postId}); // Return the deleted post
     } catch (error) {
       res.status(500).json({ error: 'Error retrieving post' });
     }
