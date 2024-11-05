@@ -18,17 +18,14 @@ export default function HomePage() {
     <Container>
     <ButtonAppBar />
       <List>
-        {posts.map((post) => (
-          <div key={post.id}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                primary={post.title}
-                secondary={post.content}
-              />
-            </ListItem>
-            <Divider component="li" />
-          </div>
-        ))}
+      {posts && posts.length > 0 && posts.map((post) => (
+        <div key={post.id}>
+          <ListItem alignItems="flex-start">
+            <ListItemText primary={post.title} secondary={post.content} />
+          </ListItem>
+          <Divider component="li" />
+        </div>
+      ))}
       </List>
     </Container>
   );
