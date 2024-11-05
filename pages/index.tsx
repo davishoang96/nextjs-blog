@@ -1,17 +1,27 @@
-// pages/index.js
+// pages/index.tsx
 
 import { useEffect, useState } from 'react';
 import { Container, Typography, Box, List, ListItem, ListItemText, Divider, Button } from '@mui/material';
 
 import ButtonAppBar from '../components/AppBar';
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+}
+
 export default function HomePage() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch('/api/posts')
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
+    const fetchPosts = async () => {
+      const res = await fetch('/api/posts');
+      const data: Post[] = await res.json();
+      setPosts(data);
+    };
+    
+    fetchPosts();
   }, []);
 
   const handleDeleteAllPosts = async () => {
@@ -34,7 +44,7 @@ export default function HomePage() {
         Blog Posts
       </Typography>
       <List sx={{ marginBottom: 2 }}>
-        {posts && posts.length > 0 ? (
+        {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post.id}>
               <ListItem alignItems="flex-start">
@@ -54,8 +64,7 @@ export default function HomePage() {
           variant="contained" 
           color="secondary" 
           onClick={handleDeleteAllPosts}
-          sx={{ marginTop: 2 }}
-        >
+          sx={{ marginTop: 2 }}>
           Delete All
         </Button>
       </Box>

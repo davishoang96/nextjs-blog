@@ -1,22 +1,32 @@
-// pages/add-post.js
+// pages/add-post.tsx
 
 import { useState, useEffect } from 'react';
 import { TextField, Button, Container, Typography, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
 
 import ButtonAppBar from '../components/AppBar';
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+}
+
 export default function AddPost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch('/api/posts')
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
+    const fetchPosts = async () => {
+      const res = await fetch('/api/posts');
+      const data: Post[] = await res.json();
+      setPosts(data);
+    };
+
+    fetchPosts();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const response = await fetch('/api/posts', {
@@ -28,7 +38,7 @@ export default function AddPost() {
     });
 
     if (response.ok) {
-      const newPost = await response.json();
+      const newPost: Post = await response.json();
       setPosts([...posts, newPost]);
       setTitle('');
       setContent('');
@@ -39,8 +49,7 @@ export default function AddPost() {
 
   return (
     <Container>
-
-      <ButtonAppBar/>
+      <ButtonAppBar />
 
       <Typography variant="h4" component="h1" gutterBottom>
         Create a post
@@ -73,14 +82,15 @@ export default function AddPost() {
         All posts
       </Typography>
       <List>
-      {posts && posts.length > 0 && posts.map((post) => (
-        <div key={post.id}>
-          <ListItem alignItems="flex-start">
-            <ListItemText primary={post.title} secondary={post.content} />
-          </ListItem>
-          <Divider component="li" />
-        </div>
-      ))}
+        {posts.length > 0 &&
+          posts.map((post) => (
+            <div key={post.id}>
+              <ListItem alignItems="flex-start">
+                <ListItemText primary={post.title} secondary={post.content} />
+              </ListItem>
+              <Divider component="li" />
+            </div>
+          ))}
       </List>
     </Container>
   );
