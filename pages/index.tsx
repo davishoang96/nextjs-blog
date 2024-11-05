@@ -16,7 +16,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/posts');
+      const res = await fetch('/api/posts/posts');
       const data: Post[] = await res.json();
       setPosts(data);
     };
@@ -25,7 +25,7 @@ export default function HomePage() {
   }, []);
 
   const handleDeleteAllPosts = async () => {
-    const response = await fetch('/api/posts', {
+    const response = await fetch('/api/posts/posts', {
       method: 'DELETE',
     });
 
@@ -62,7 +62,7 @@ export default function HomePage() {
       <Box display="flex" justifyContent="center">
         <Button 
           variant="contained" 
-          color="secondary" 
+          color="error" 
           onClick={handleDeleteAllPosts}
           sx={{ marginTop: 2 }}>
           Delete All

@@ -1,6 +1,6 @@
 // pages/api/posts.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createPost, getAllPosts, deleteAllPosts } from '../../repositories/postRepository';
+import { createPost, getAllPosts, deleteAllPosts } from '../../../repositories/postRepository';
 
 interface Post {
   id: number;

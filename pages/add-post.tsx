@@ -18,7 +18,7 @@ export default function AddPost() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/posts');
+      const res = await fetch('/api/posts/posts');
       const data: Post[] = await res.json();
       setPosts(data);
     };
@@ -29,7 +29,7 @@ export default function AddPost() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('/api/posts', {
+    const response = await fetch('/api/posts/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +86,15 @@ export default function AddPost() {
           posts.map((post) => (
             <div key={post.id}>
               <ListItem alignItems="flex-start">
-                <ListItemText primary={post.title} secondary={post.content} />
+                <ListItemText 
+                  primary={post.title} 
+                  secondary={
+                    <>
+                      {post.content} <br />
+                      <span style={{ fontSize: '0.8em', color: 'gray' }}>ID: {post.id}</span>
+                    </>
+                  } 
+                />
               </ListItem>
               <Divider component="li" />
             </div>
