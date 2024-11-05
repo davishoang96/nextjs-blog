@@ -1,5 +1,5 @@
 import { PrismaClient, Post } from '@prisma/client';
-import { createPost, getAllPosts, deleteAllPosts } from '../repositories/postRepository'
+import { createPost, getAllPosts, deleteAllPosts, getPostById } from '../repositories/postRepository'
 
 const prisma = new PrismaClient();
 
@@ -9,6 +9,7 @@ jest.mock('@prisma/client', () => {
       create: jest.fn(),
       findMany: jest.fn(),
       deleteMany: jest.fn(),
+      findUnique: jest.fn(),
     },
   };
   return { PrismaClient: jest.fn(() => mPrismaClient) };
@@ -29,6 +30,34 @@ describe('Post Service', () => {
 
     expect(prisma.post.create).toHaveBeenCalledWith({ data: mockData });
     expect(result).toEqual(createdPost);
+  });
+
+  it('should return a post when a valid ID is provided', async () => {
+    // Arrange
+    (prisma.post.findUnique as jest.Mock).mockResolvedValue(mockData);
+
+    // Act
+    const result = await getPostById(1);
+
+    // Assert
+    expect(prisma.post.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 },
+    });
+    expect(result).toEqual(mockData);
+  });
+
+  it('should return null when not found in database', async () => {
+    // Arrange
+    (prisma.post.findUnique as jest.Mock).mockResolvedValue(null);
+
+    // Act
+    const result = await getPostById(5);
+
+    // Assert
+    expect(prisma.post.findUnique).toHaveBeenCalledWith({
+      where: { id: 5 },
+    });
+    expect(result).toBeNull();
   });
 
   it('should get all posts', async () => {
@@ -73,4 +102,22 @@ describe('Post Service', () => {
     expect(prisma.post.deleteMany).toHaveBeenCalled();
     expect(result).toEqual(deleteResult); // Should match the count of deleted posts
   });
+
+  it('should get a post by id', async () => {
+    // Arrange: initial mock data for posts
+    const initialPosts = [
+      { id: 1, title: 'Post One', content: 'Content for Post One' },
+      { id: 2, title: 'Post Two', content: 'Content for Post Two' },
+      { id: 3, title: 'Post Three', content: 'Content for Post Three' },
+      { id: 4, title: 'Post Four', content: 'Content for Post Four' },
+      { id: 5, title: 'Post Five', content: 'Content for Post Five' },
+      { id: 6, title: 'Post Six', content: 'Content for Post Six' },
+    ];
+
+    // Mock the initial data retrieval
+    (prisma.post.findMany as jest.Mock).mockResolvedValue(initialPosts);
+
+    // Act
+    const result = await getPostById(1);
+  })
 });

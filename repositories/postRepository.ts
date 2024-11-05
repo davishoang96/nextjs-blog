@@ -18,3 +18,11 @@ export async function getAllPosts(): Promise<Post[]> {
 export async function deleteAllPosts(): Promise<{ count: number }> {
   return await prisma.post.deleteMany();
 }
+
+export async function getPostById(id: number): Promise<Post | null> {
+  return await prisma.post.findUnique({
+    where: {
+      id,
+    },
+  });
+}
