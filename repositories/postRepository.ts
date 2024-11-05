@@ -26,3 +26,13 @@ export async function getPostById(id: number): Promise<Post | null> {
     },
   });
 }
+
+export async function deletePostById(id: number): Promise<number | null> {
+  const deletedPost = await prisma.post.delete({
+    where: {
+      id,
+    },
+  });
+
+  return deletedPost.id; // Return the ID of the deleted post
+}
