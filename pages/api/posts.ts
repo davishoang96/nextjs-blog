@@ -8,15 +8,25 @@ interface Post {
   content: string;
 }
 
+interface PostRequestBody {
+  title: string;
+  content: string;
+}
+
 type PostResponse = Post | { error: string };
 type PostsResponse = Post[] | { error: string };
+type DeleteResponse = { message: string } | { error: string };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<PostResponse | PostsResponse>
+  res: NextApiResponse<PostResponse | PostsResponse | DeleteResponse>
 ) {
   if (req.method === 'POST') {
-    const { title, content } = req.body;
+    const { title, content } = req.body as PostRequestBody;
+
+    if (!title || !content) {
+      return res.status(400).json({ error: 'Title and content are required' });
+    }
 
     try {
       const post: Post = await createPost({ title, content });
@@ -34,7 +44,7 @@ export default async function handler(
   } else if (req.method === 'DELETE') {
     try {
       await deleteAllPosts();
-      res.status(200).json({ error: 'All posts deleted' });
+      res.status(200).json({ message: 'All posts deleted' });
     } catch (error) {
       res.status(500).json({ error: 'Error deleting posts' });
     }
