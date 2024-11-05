@@ -6,21 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from '@mui/material';
 
 export default function ButtonAppBar() {
   return (
     <AppBar position="static">
         <Toolbar>
-          <IconButton
-            href='/'
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="home"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Button href='/' color="inherit">Home</Button>
           <Button href='/add-post' color="inherit">Add</Button>
         </Toolbar>
       </AppBar>
