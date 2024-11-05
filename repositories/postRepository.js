@@ -10,3 +10,7 @@ export async function createPost(data) {
 export async function getAllPosts() {
   return await prisma.post.findMany();
 }
+
+export async function deleteAllPosts(data) {
+  return await prisma.post.deleteMany({ data });
+}

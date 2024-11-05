@@ -1,5 +1,5 @@
 // pages/api/posts.js
-import { createPost, getAllPosts } from '../../repositories/postRepository';
+import { createPost, getAllPosts, deleteAllPosts } from '../../repositories/postRepository';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -18,7 +18,16 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).json({ error: 'Error fetching posts' });
     }
-  } else {
+  } 
+  else if (req.method === 'DELETE') {
+    try {
+      const posts = await deleteAllPosts();
+      res.status(200).json(posts);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching posts' });
+    }
+  }
+  else {
     res.status(405).json({ error: 'Method not allowed' });
   }
 }
